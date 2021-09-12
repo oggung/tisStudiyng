@@ -113,4 +113,46 @@
 <!-- vue 플러그인 임포트   -->
 
 
+<!-- vue 플러그인 임포트   -->
+<script src="https://unpkg.com/vue@2.6.14/dist/vue.js">/* vue 플러그인 임포트 */</script>
+<script src="https://unpkg.com/vuex@3.3.0/dist/vuex.js"> /* vuex 플러그인 임포트 */</script>
+<script src="https://unpkg.com/vue-router@3.1.6/dist/vue-router.js"> /* vue 라우터 플러그인 임포트 */</script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"> /* axios 플러그인 임포트 */</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"> /* jQuery 플러그인 임포트 */</script>
+<script>
+    new Vue({
+            el: "#app",
+            data: {
+                arr:[1,2,3,4,5],
+            },
 
+        //template: ``,
+        methods : {
+            /* 이벤트 핸들러 등록 + 일반 함수 */
+            change1(){
+                console.log(event.target);
+                this.$data.arr[0] = 100;//그냥 바꾸믄 안댐..
+                console.log(this.$data.arr);
+                this.$set(this.$data.arr, 0, 100);
+            },
+            change2(){
+                console.log(event.target);
+                Vue.set(this.$data.arr, "1", 200);
+            },
+            change3(){
+                console.log(event.target);
+                //this.$data.arr.splice(2,1,300);
+                this.$data.arr.splice(0,2); //스플라이스는 복제 후 재할당 기능이 있음...
+            },
+            change4(){
+                console.log(event.target);
+                //spred 연산자...
+                //this.$data.arr. 배열을 복제 해서 새로운 배열로 만드시오.
+                const arr_copy=[...this.$data.arr,700];//spred 연산자를 이용하여 복제 후 재 할당 하는 예제.....
+                this.$data.arr = arr_copy;
+            }
+        }
+
+    });
+
+</script>
