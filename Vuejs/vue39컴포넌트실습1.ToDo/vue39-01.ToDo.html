@@ -236,10 +236,77 @@
     <div id="app">
 
         <!-- TodoHeader -->
+        <todo-header></todo-header>
+
+        <!-- TodoInput -->
+        <todo-input v-on:add-todo="addTodo"></todo-input>
+
+        <!-- TodoList -->
+        <todo-list
+            v-bind:todo-items="todoItems"
+            v-on:done-toggle="doneToggle"
+            v-on:remove-todo="removeTodo"
+        ></todo-list>
+
+        <!-- TodoFooter -->
+        <todo-footer v-on:clear-all="clearAll"></todo-footer>
+
+    </div>
+
+
+
+</body>
+
+</html>
+
+<!-- vue 플러그인 임포트   -->
+
+<!-- vue 플러그인 임포트   -->
+<script src="https://unpkg.com/vue@2.6.14/dist/vue.js">/* vue 플러그인 임포트 */</script>
+<script src="https://unpkg.com/vuex@3.3.0/dist/vuex.js"> /* vuex 플러그인 임포트 */</script>
+<script src="https://unpkg.com/vue-router@3.1.6/dist/vue-router.js"> /* vue 라우터 플러그인 임포트 */</script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"> /* axios 플러그인 임포트 */</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"> /* jQuery 플러그인 임포트 */</script>
+<script>
+
+    //헤더
+    var TodoHeader = {
+        template: `
+        <!-- TodoHeader -->
         <header>
             <h1>TODO it!</h1>
         </header>
+        `,
+    };
 
+    //푸터
+    var TodoFooter = {
+        template: `
+        <!-- TodoFooter -->
+        <div class="clearAllContainer">
+            <span class="clearAllBtn" v-on:click="clearAll">Clear All</span>
+        </div>
+        `,
+        methods:{
+            clearAll(){
+                console.log('clearAll') // 부모에 클리어올 이벤트 발생
+                this.$emit('clear-all');
+            }
+        }
+    };
+
+    //투두 인풋
+    var TodoInput = {
+        /* pdtmc^2w */
+        props: [] ,
+        data: function() {
+            /* 컴포넌트 안에서 사용되는 변수 등록. 개별 변수 */
+            return {
+                newTodoItem : null,
+                showModal : false,
+            }
+        },
+        template: `
         <!-- TodoInput -->
         <div class="inputBox shadow">
             <input type="text"
@@ -270,7 +337,27 @@
                 </div>
             </div>
         </div>
+        `,
+        methods: {
+            /* 이벤트 핸들러 등록 + 일반 함수 */
+            addTodo(){
+                this.$emit('add-todo',this.$data.newTodoItem)
+                this.$data.newTodoItem = "";
+            }
+        },
+    };
 
+    //투두리스트
+    var TodoList = {
+        /* pdtmc^2w */
+        props: ['todo-items'] ,
+        data: function() {
+            /* 컴포넌트 안에서 사용되는 변수 등록. 개별 변수 */
+            return {
+
+            }
+        },
+        template: `
         <!-- TodoList -->
         <section>
             <transition-group name="list" tag="ul">
@@ -282,27 +369,130 @@
                     {{ todoItem.todo }}
                     <span class="removeBtn"
                           type="button"
-                          v-on:click="removeTodo(todoItem.id, index)">
+                          v-on:click.stop="removeTodo(todoItem.id, index)">
                         <i class="far fa-trash-alt" aria-hidden="true"></i>
                     </span>
                 </li>
             </transition-group>
         </section>
+        `,
+        methods: {
+            /* 이벤트 핸들러 등록 + 일반 함수 */
+            doneToggle(id, index){
+                this.$emit('done-toggle',id,index)
+            },
+            removeTodo(id, index){
+                this.$emit('remove-todo',id,index)
+            },
+            checked(done){//2
+                if(done){
+                    return 'checked';
+                }else{
+                    return null;
+                }
+            },
 
-        <!-- TodoFooter -->
-        <div class="clearAllContainer">
-            <span class="clearAllBtn" v-on:click="clearAll">Clear All</span>
-        </div>
+        },
+        components: {
+            /* 전역 컴포넌트는 등록하지 않는다. */
+            /* 지역 컴포넌트나 파일 컴포넌트이면 등록해야 한다 . 예시) "태그명" : 컴포넌트명 */
 
-    </div>
+        },
 
-    
+    };
 
-</body>
 
-</html>
+    new Vue({
+        /* edtmc^2w */
+        el: "#app",
+        data: {
+            /* 인스턴스 안에서 사용되는 변수 등록, 공유 변수 */
+            newTodoItem : null,
+            showModal : false,
+            todoItems : [
+                { id: 1, todo: "영화보기", done: false },
+                { id: 2, todo: "주말 산책", done: true },
+                { id: 3, todo: "ES6 학습", done: false },
+                { id: 4, todo: "잠실 야구장", done: false }
+            ],
 
-<!-- vue 플러그인 임포트   -->
+        },
+        //template: ``,
+        methods: {
+            /* 이벤트 핸들러 등록 + 일반 함수 */
+            addTodo(newTodoItem){
+                let maxId = 0;
+                console.log("==>>>"+this.$data.todoItems.length)
+                if(this.$data.todoItems.length > 0 ){
+                    //maxId = this.$data.todoItems.map(item=>item.id).max();
+                    //maxId = this.$data.todoItems.length;
+                    maxId = this.$data.todoItems.map(item=>item.id).reduce((prev, curt)=>prev>=curt ? prev : curt);
+                }else{
+                    maxId = 0;
+                }
+                const newId = maxId+1;
+                const todo = {
+                    id:newId,
+                    //todo:this.$data.newTodoItem,
+                    todo:newTodoItem,
+                    done:false
+                }
+                //this.$set.todoItems
+                //this.$data.todoItems[this.$set.todoItems.length] = todo;
+                this.$set(this.$data.todoItems, this.$data.todoItems.length+"", todo);
+
+                this.$data.newTodoItem = "";
+
+            },
+            //close(){
+
+            //},
+            removeTodo(id, index){
+                //debugger;
+                //id 값을 이용해서 배열의 인덱스를 찾는다구우..
+                //find index() 사용...
+                const findIndex = this.$data.todoItems.findIndex((item, index, array) =>{
+                    return item.id === id;
+                });
+                this.$data.todoItems.splice(findIndex,1);
+                event.preventDefault();
+                event.stopPropagation();
+            },
+            clearAll(){//1
+                //this.$data.todoItems = [];
+                this.$set(this.$data, 'todoItems', [] );
+            },
+            /*checked(done){
+                if(done){
+                    return 'checked';
+                }else{
+                    return null;
+                }
+            },*/
+            doneToggle(id, index){
+
+                //debugger;
+                //아이디를 이용해서 배열의 인덱스를 찾기
+                const findIndex = this.$data.todoItems.findIndex((item, index, array) =>{
+                    //console.log("ID=>" + id);
+                    return item.id === id;
+
+                });
+                this.$data.todoItems[findIndex].done = !this.$data.todoItems[findIndex].done;
+                //this.$data.todoItems.splice(findIndex,1);
+                //this.$data.todoitems[findIndex].done = !this.$data.todoitems[findIndex].done
+            }
+        },
+        components: {
+            "todo-header" : TodoHeader, // 로컬 컴포넌트
+            "todo-footer" : TodoFooter, // 로컬 컴포넌트
+            "todo-input" : TodoInput, // 인풋 컴포넌트
+            "todo-list" : TodoList, // 리스트 컴포넌트
+        },
+
+    });
+
+</script>
 
 
 
