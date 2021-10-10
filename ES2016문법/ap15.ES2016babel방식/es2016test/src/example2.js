@@ -1,0 +1,3 @@
+//문법에 따른 임포트 방식의 차이...
+import b,{a,c} from './example'
+console.log(a, b, c);

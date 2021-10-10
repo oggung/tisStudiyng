@@ -40,3 +40,24 @@
 </body>
 
 </html>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.js">
+    /* 자바스크립트로 컴파일러. ES6-->ES5, JSX-->ES5 */
+</script>
+<script type="text/babel">
+    const cities = ["서울","부산","제주"];
+    console.log(cities[0], cities[1], cities[2]);
+    console.log(...cities);
+
+    const east = ["U","K","T"];
+    const west = ["N","C","G"];
+    const contries = [...east, ...west];
+    console.log(contries);
+
+    let lakes = ["경포호","화진포","송지호","청초호"];
+    let [first, ...lakes] = lakes;
+    console.log(first);
+    console.log(rest);
+
+    let [city, ...cityrest] = [...east, ...west];
+</script>
