@@ -647,8 +647,8 @@
                         doneToggle( mutations/* 고정 */, id ){
                             mutations.commit("doneToggle", id );
                         },
-                        removeTodo( mutations/* 고정 */, id, index ){
-                            mutations.commit("removeTodo", id, index );
+                        removeTodo( mutations/* 고정 */, id ){
+                            mutations.commit("removeTodo", id );
                         },
                         clearAll( mutations/* 고정 */){
                             mutations.commit("clearAll");
@@ -664,7 +664,7 @@
                         doneToggle(state/* 고정 */, id){
                             /* ...중략. 직접 작성 */
                         },
-                        removeTodo(state/* 고정 */, id, index){
+                        removeTodo(state/* 고정 */, id){
                             /* ...중략. 직접 작성 */
                         },
                         clearAll(state/* 고정 */){
@@ -710,10 +710,10 @@
                             addTodo: function(newTodoItem) {
                                 // create. store "addTodo" dispatch
                             },
-                            doneToggle: function(id, index) {
+                            doneToggle: function(id) {
                                 // update. store의 "doneToggle" dispatch
                             },
-                            removeTodo: function(id, index) {
+                            removeTodo: function(id) {
                                 // delete each. store의 "removeTodo" dispatch
                             },
                             clearAll: function() {

@@ -18,16 +18,12 @@ button {
 <template>
     <div id="app">
         <!-- TodoHeader -->
-        <TodoHeader></TodoHeader>
 
         <!-- TodoInput -->
-        <TodoInput></TodoInput>
 
         <!-- TodoList -->
-        <TodoList></TodoList>
 
         <!-- TodoFooter -->
-        <TodoFooter></TodoFooter>
     </div>
 </template>
 

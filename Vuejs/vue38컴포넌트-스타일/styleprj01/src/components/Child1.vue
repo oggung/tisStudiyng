@@ -1,10 +1,11 @@
-<style scoped >
+<style scoped>
 .main {
     border: 1px solid black;
     background-color: yellow;
 }
 </style>
-            <template>
+
+<template>
     <div class="main">
         {{ msg }}
     </div>
@@ -17,7 +18,7 @@ export default {
     data: function () {
         /* 컴포넌트 안에서 사용되는 변수 등록. 개별 변수 */
         return {
-            msg: "Child"
+            msg: "Child1"
         };
     },
     //template: ``,

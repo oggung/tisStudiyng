@@ -4,7 +4,7 @@
     background-color: aqua;
 }
 </style>
-            <template>
+<template>
     <div class="main">
         {{ msg }}
     </div>

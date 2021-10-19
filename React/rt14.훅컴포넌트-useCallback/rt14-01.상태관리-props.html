@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+
+    <link rel="stylesheet" href="../css/reset.css"/>
+
+</head>
+
+<body>
+
+    <xmp>
+        React의 컴포넌트 사이에서 데이터를 주고 받는 방법에 대해서 배운다.
+
+        부모가 자식에게 데이터를 전달하는 것은 자식컴포넌트에서 부모컴포넌트의 데이터를 이용한(읽기) 로직을 처리하기 위함이고,
+        자식 컴포넌트에서 부모컴포넌트로 데이터를 전달하는 것은 부모 state의 값을 변경하기 위함입니다.
+
+        state down vs state up
+        - state down: 부모 -> 자식 데이터 전달
+        - state up: 자식 -> 부모 데이터 전달
+    </xmp>
+    <div>
+        <img src="../images/stateupdonw.png" alt="" style="display: inline-block;">
+    </div>
+
+    <xmp>
+        - 부모 컴포넌트에서 자식 컴포넌트에 함수를 props 로 전달 후, 해당 함수를 호출해서 자식 데이터를 부모에게 전달하게 된다.
+
+        부모 컴포넌트
+        function Parent(props) {
+            // 컴포넌트의 상태값 설정
+            const [parentText, setParentText] = useState('parent text'); // 상태값이 기본타입인 경우
+            const [childMessage, setChildMessage] = useState(null); // 상태값이 기본타입인 경우
+
+            // 콜백 메서드의 연관 배열에는 사용되는 상태명을 기술.
+            // 콜백 메서드에서 상태를 한개 사용하면 1개를 적고
+            // 콜백 메서드에서 상태를 두개 사용하면 2개를 적으시오.
+            const callbackChildText = useCallback( (text)=> {
+                console.log(text);
+                setChildMessage(text);
+                setParentText(text);
+            }, [childMessage, parentText] );
+
+            // JSX로 화면 만들기
+            return (
+                <div>
+                    <Child callbackChildText={callbackChildText} parentText={parentText}></Child>
+                    <br />
+                    {childMessage}
+                </div>
+            )
+        };
+
+        자식 컴포넌트
+        function Child(props) {
+            // 컴포넌트의 상태값 설정
+            const [childText, setChildText] = useState('child text'); // 상태값이 기본타입인 경우
+
+            function handlerChild() {
+                props.callbackChildText(childText);
+            }
+
+            // JSX로 화면 만들기
+            return (
+                <div>
+                    {props.parentText}
+                    <br />
+                    <button onClick={handlerChild}>button</button>
+                </div>
+            )
+        };
+
+    </xmp>
+
+    <div>
+        <img src="../images/react_data_flow.png" style="display: inline-block;">
+    </div>
+
+    <hr>
+
+    <div id="app">
+    </div>
+</body>
+
+</html>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.js">
+    /* 자바스크립트로 컴파일러. ES6-->ES5, JSX-->ES5 */
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/16.12.0/umd/react.development.js">
+    /* import React, { Component, PureComponent } from 'react' */
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prop-types/15.7.2/prop-types.js">
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.11.0/umd/react-dom.development.js">
+    /* import ReactDOM from 'react-dom' */
+</script>
+<script type="text/babel">
+
+    const { useState, useEffect, useRef, useCallback, useMemo, Fragment } = React;
+
+    function Parent(props) {
+        // 컴포넌트의 상태값 설정
+        const [parentText, setParentText] = useState('parent text'); // 상태값이 기본타입인 경우
+        const [childMessage, setChildMessage] = useState(null); // 상태값이 기본타입인 경우
+
+        // callback 메서드 작성. callback 메서드는 부모의 공유 상태값을 변경하기 위해서 사용된다.
+        const callback = useCallback( (param)=>{
+            // state 변경
+            console.log(param);
+
+            debugger;
+            setChildMessage(param); // childMessage 상태값 변경
+            setParentText(param); // parentText 상태값 변경
+        }, [/* 메서드와 연관되는 상태(변수)명들을 기술 */ childMessage, parentText]);
+
+        // JSX로 화면 만들기
+        return (
+            <div>
+                <Child callback={callback} parentText={parentText}></Child>
+                <br />
+                {childMessage}
+            </div>
+        )
+    }
+
+    function Child(props) {
+        // 컴포넌트의 상태값 설정
+        const [childText, setChildText] = useState('child text'); // 상태값이 기본타입인 경우
+
+        // 이벤트 핸들러 작성.
+        const handlerChild = (event)=>{
+            // 이벤트 핸들러는 화살표 함수로 만들면 this bind()를 생략해도 된다
+            console.log(event.target);
+            debugger;
+
+            // 부모 콜백 메서드 호출.
+            props.callback( childText );
+        };
+
+        // JSX로 화면 만들기
+        return (
+            <div>
+                parentText: {props.parentText}
+                <br />
+                childText: {childText}
+                <br />
+                <button onClick={handlerChild}>button</button>
+            </div>
+        )
+    }
+
+    // Parent( Container 역활) 을 화면에 붙이시오.
+    ReactDOM.render(<Parent></Parent>, document.getElementById("app"));
+</script>

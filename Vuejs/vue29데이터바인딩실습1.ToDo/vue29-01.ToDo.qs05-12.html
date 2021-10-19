@@ -209,25 +209,25 @@
         { id: 4, todo: "잠실 야구장", done: false }
     ]
 
-    todoItems에서 최대 id 값을 구하는 방법.
-        방법1. todoItems.reduce() 를 사용하여 newId를 구하는 방법
-        방법2. 방법2. todoItems.reduce() 를 사용하여 최대 id 값을 찾기
-        방법3. todoItems.map()과 Math.max()를 사용하여 max id를 찾는 방법
-
     기능 추가
         1. add 할 때 this.$data.todoItems 가 빈 배열인 경우 기능 추가
         2. add 후에 input 태그에 남아있는 입력값 지우기
         3. 토글 할 때 findIndex 로 못 찾는 경우에 대한 방어 코드 추가.
         4. input 태그에 빈 문자일이 입력 되는 경우는 배열에 추가되지 않게.
-        5. todo 타이틀 바꾸기. 기능 누락. 기능 추가가 필요합니다.
+
+
+    todoItems에서 최대 id 값을 구하는 방법.
+        방법1. todoItems.map()과 todoItems.reduce()를 사용하여 max id를 찾는 방법
+        "ap03-11.객체배열.html" 를 참조하여 작성하시오.
+
 
     주의 사항.
         1. checked 메서드에서 class에 빈 문자열로 설정하면 안됨.
             null 로 설정하면 됨.
         2. 삭제 버튼을 클릭하면 click 이벤트가 bubbling 된다.
             click 이벤트가 bubbling 안되게 이벤트 취소 기능을 추가해야 한다.
-            변경 전: v-on:click="removeTodo(todoItem.id, index)"
-            변경 후: v-on:click.stop="removeTodo(todoItem.id, index)"
+            변경 전: v-on:click="removeTodo(todoItem.id)"
+            변경 후: v-on:click.stop="removeTodo(todoItem.id)"
     </pre>
     <hr>
 
@@ -277,12 +277,12 @@
                 <li v-for="(todoItem, index) in todoItems"
                     v-bind:key="todoItem.id"
                     v-bind:class="checked(todoItem.done)"
-                    v-on:click="doneToggle(todoItem.id, index)">
+                    v-on:click="doneToggle(todoItem.id)">
                     <i class="checkBtn fas fa-check" aria-hidden="true"></i>
                     {{ todoItem.todo }}
                     <span class="removeBtn"
                           type="button"
-                          v-on:click.stop="removeTodo(todoItem.id, index)">
+                          v-on:click="removeTodo(todoItem.id)">
                         <i class="far fa-trash-alt" aria-hidden="true"></i>
                     </span>
                 </li>
@@ -303,8 +303,6 @@
 </html>
 
 <!-- vue 플러그인 임포트   -->
-
-<!-- vue 플러그인 임포트   -->
 <script src="https://unpkg.com/vue@2.6.14/dist/vue.js">/* vue 플러그인 임포트 */</script>
 <script src="https://unpkg.com/vuex@3.3.0/dist/vuex.js"> /* vuex 플러그인 임포트 */</script>
 <script src="https://unpkg.com/vue-router@3.1.6/dist/vue-router.js"> /* vue 라우터 플러그인 임포트 */</script>
@@ -316,82 +314,74 @@
         el: "#app",
         data: {
             /* 인스턴스 안에서 사용되는 변수 등록, 공유 변수 */
-            newTodoItem : null,
-            showModal : false,
-            todoItems : [
+            newTodoItem: null,
+            showModal: false,
+            todoItems: [
                 { id: 1, todo: "영화보기", done: false },
                 { id: 2, todo: "주말 산책", done: true },
                 { id: 3, todo: "ES6 학습", done: false },
                 { id: 4, todo: "잠실 야구장", done: false }
             ],
-
         },
         //template: ``,
         methods: {
             /* 이벤트 핸들러 등록 + 일반 함수 */
-            addTodo(){
-                let maxId = 0;
-                console.log("==>>>"+this.$data.todoItems.length)
-                if(this.$data.todoItems.length > 0 ){
-                    //maxId = this.$data.todoItems.map(item=>item.id).max();
-                    //maxId = this.$data.todoItems.length;
-                    maxId = this.$data.todoItems.map(item=>item.id).reduce((prev, curt)=>prev>=curt ? prev : curt);
-                }else{
-                    maxId = 0;
-                }
-                const newId = maxId+1;
-                const todo = {
-                    id:newId,
-                    todo:this.$data.newTodoItem,
-                    done:false
-                }
-                //this.$set.todoItems
-                //this.$data.todoItems[this.$set.todoItems.length] = todo;
-                this.$set(this.$data.todoItems, this.$data.todoItems.length+"", todo);
-
-                this.$data.newTodoItem = "";
-
+            clearAll(){
+                // this.$data.todoItems = [];
+                this.$set( this.$data, 'todoItems', []);
             },
-            //close(){
-
-            //},
-            removeTodo(id, index){
-                //debugger;
-                //id 값을 이용해서 배열의 인덱스를 찾는다구우..
-                //find index() 사용...
-                const findIndex = this.$data.todoItems.findIndex((item, index, array) =>{
+            removeTodo(id){
+                // id 값을 이용해서 배열의 index를 찾으시오. ==> findIndex() 사용
+                const findIndex = this.$data.todoItems.findIndex( (item, index, array) =>{
                     return item.id === id;
                 });
-                this.$data.todoItems.splice(findIndex,1);
+                // 찾은 인덱스를 이용하여 this.$data.todoItems 에서 삭제하시오.
+                this.$data.todoItems.splice(findIndex, 1);
+
+                // 이벤트 취소. 버블링 방지
+                event.stopPropagation()
                 event.preventDefault();
-                event.stopPropagation();
             },
-            clearAll(){//1
-                //this.$data.todoItems = [];
-                this.$set(this.$data, 'todoItems', [] );
-            },
-            checked(done){//2
-                if(done){
-                    return 'checked';
-                }else{
+            checked(done){
+                if( done )
+                    return "checked";
+                else
                     return null;
-                }
             },
-            doneToggle(id, index){
+            addTodo(){
+                // todoItems에서 최대 id 값을 구하는 방법.
+                // 방법1. todoItems.map()과 todoItems.reduce()를 사용하여 max id를 찾는 방법
+                // 방법2. todoItems.reduce() 를 사용하여 newId를 구하는 방법
+                // 방법3. todoItems.reduce() 를 사용하여 최대 id 값을 찾기
+                let maxid = 0;
+                if( this.$data.todoItems.length>0){
+                    maxid = this.$data.todoItems.map( item=>item.id )
+                                                .reduce( (prev,curt)=> prev>= curt ? prev: curt );
+                }
+                else {
+                    maxid = 0;
+                }
+                const newid = maxid + 1;
 
-                //debugger;
-                //아이디를 이용해서 배열의 인덱스를 찾기
-                const findIndex = this.$data.todoItems.findIndex((item, index, array) =>{
-                    //console.log("ID=>" + id);
-                    return item.id === id;
+                const todo = {
+                    id: newid,
+                    todo: this.$data.newTodoItem,
+                    done: false,
+                };
 
-                });
+                // this.$data.todoItems.push( todo );
+                // this.$data.todoItems[ this.$data.todoItems.length] = todo;
+                this.$set( this.$data.todoItems, this.$data.todoItems.length+"", todo);
+
+                // add 후에 input 태그에 남아있는 입력값 지우기
+                this.$data.newTodoItem = '';
+            },
+            doneToggle(id){
+                // id를 이용해서 배열의 인덱스 찾기 ==> findIndex
+                // done 값을 반전시킨다. this.$data.todoItems[findIndex].done = !this.$data.todoItems[findIndex].done;
+                const findIndex = this.$data.todoItems.findIndex( item => id === item.id );
                 this.$data.todoItems[findIndex].done = !this.$data.todoItems[findIndex].done;
-                //this.$data.todoItems.splice(findIndex,1);
-                //this.$data.todoitems[findIndex].done = !this.$data.todoitems[findIndex].done
-
-
-            }
+            },
         },
         components: {
             /* 전역 컴포넌트는 등록하지 않는다. */

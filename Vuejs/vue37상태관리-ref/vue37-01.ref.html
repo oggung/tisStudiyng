@@ -40,8 +40,8 @@
         </p>
         <div>
             <label for="myinput1">myinput1</label>
-            <input type="text" ref="myinput1" id="myinput1" v-model:value="gg">
-            <button >입력결과 화면에 출력</button>
+            <input type="text" ref="myinput1" id="myinput1" v-model:value="message">
+            <button v-on:click="handlerMyinput1">입력 값 alert로 출력</button>
             <div>
                 {{message}}
             </div>
@@ -64,13 +64,13 @@
         el: "#app",
         data: {
             /* 인스턴스 안에서 사용되는 변수 등록, 공유 변수 */
-            message:"",
+            message: null,
         },
         //template: ``,
         methods: {
             /* 이벤트 핸들러 등록 + 일반 함수 */
-            aaa(){
-                //this.
+            handlerMyinput1(){
+                // <input type="text" ref="myinput1" id="myinput1"> 에서 value 값을 가져오려면
             }
         },
         components: {
@@ -88,7 +88,7 @@
         },
         mounted: function() {
             console.log("mounted");
-            //<input type="text" ref="myinput1" id="myinput1"> 포커스
+            // <input type="text" ref="myinput1" id="myinput1"> 에 포커스 주기
             this.$refs.myinput1.focus();
         },
         updated: function() {

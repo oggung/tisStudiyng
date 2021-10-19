@@ -26,11 +26,8 @@
 
         작성  순서
             단계1: React 객체 스크립트 플러그인 추가 or 객체 import
-            단계2. React 객체 import 여부 확인
-                console.log(React)
-                console.log(ReactDOM)
-            단계3. Component 만들기
-            단계4. Component 화면에 컴포넌트 주입
+            단계2. Component 만들기
+            단계3. Component 화면에 컴포넌트 주입
     </xmp>
     <hr>
 
@@ -41,7 +38,6 @@
 </body>
 
 </html>
-
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.js">
     /* 자바스크립트로 컴파일러. ES6-->ES5, JSX-->ES5 */
@@ -54,66 +50,23 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.11.0/umd/react-dom.development.js">
     /* import ReactDOM from 'react-dom' */
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react-redux/7.2.2/react-redux.js">
-    /*  import ReactRedux, {Provider, useDispatch, useSelector} from 'react-redux' */
-</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react-router-dom/5.2.0/react-router-dom.js">
-    /*  import ReactRouterDOM, {BrowserRouter, Switch, Route, Redirect, Link, NavLink} from 'react-router-dom' */
-</script>
-<script src="https://unpkg.com/immer">
-    /* 불변객체 state를 조작하는 라이브러리. import immer from 'immer' */
-</script>
 <script type="text/babel">
-// import React, { useState, useEffect, useRef, useCallback, useMemo, Fragment } from 'react';
-// import PropTypes from 'prop-types';
-// import ReactRedux, { Provider, useDispatch, useSelector } from 'react-redux';
-// import ReactRouterDOM, { BrowserRouter, Switch, Route, Redirect, Link, NavLink, useParams, useLocation, useHistory, useRouteMatch } from 'react-router-dom';
-// import { takeEvery, put, call, all, fork, spawn } from 'redux-saga/effects';
-const { useState, useEffect, useRef, useCallback, useMemo, Fragment } = React;
+    const { useState, useEffect, useRef, useCallback, useMemo, Fragment } = React;
 
-function StrCont(props) {
-    const [str, setStr] = useState(['하나','두울','세엣','네엣']); // 상태값이 기본타입인 경우
+    function Loop3(props) {
+        // 컴포넌트의 상태값 설정
+        const [변수명, set변수명] = useState(["One", "Two", "Three"]); // 상태값이 기본타입인 경우
 
-        const strs = str.map((str, index)=>{
-            return (<li name={str}><span>{index}</span></li>)
-        })
-
+        // JSX로 화면 만들기
+        const lis = 변수명.map( (value)=>{
+            return <li key={value}> {value} </li>
+        });
         return (
-            <Fragment>
-                {str}
-            </Fragment>
+            <ul>
+                {lis}
+            </ul>
         )
-}
+    }
 
-function wrap1(props) {
-    // 컴포넌트의 상태값 설정
-    const [변수명, set변수명] = useState('기본값'); // 상태값이 기본타입인 경우
-
-    // JSX로 화면 만들기
-    return (
-        <div id="wrap1"></div>
-    )
-}
-function wrap2(props) {
-    // 컴포넌트의 상태값 설정
-    const [변수명, set변수명] = useState('기본값'); // 상태값이 기본타입인 경우
-
-    // JSX로 화면 만들기
-    return (
-        <div id="wrap2"></div>
-    )
-}
-function wrap3(props) {
-    // 컴포넌트의 상태값 설정
-    const [변수명, set변수명] = useState('기본값'); // 상태값이 기본타입인 경우
-
-    // JSX로 화면 만들기
-    return (
-        <div id="wrap3"></div>
-    )
-}
-
-
-ReactDOM.render( <StrCont ></StrCont>, document.getElementById("app") );
-
+    ReactDOM.render( <Loop3 />, document.getElementById("wrap3"));
 </script>

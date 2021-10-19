@@ -42,31 +42,26 @@
 <!-- ES5 사용하기 -->
 <script type="text/javascript">
 
-var name = "abe";
-var age = 10;
-var  getMessage = ()=>{
-    return "hello, ES5";
-}
-    document.getElementById("output_es6").innerText = "Hello, ES5";
+    var name = "abc";
+    var age = 10;
 
+    var getMessage = function(){
+        return "Hello, ES5";
+    }
+    document.getElementById("output_es5").innerText = getMessage();
 </script>
-
 
 <!-- ES2016 사용하기 -->
-<script src="https://cdnjs.cloud"></script>
-<script type = "text/babel">
-    const name = "abc";
-    let age = 10;
-
-    const getMessage = () =>{
-        return "gello~~"
-    }
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.js">
+    /* 자바스크립트로 컴파일러. ES2016-->ES5, JSX-->ES5 */
 </script>
+<script type="text/babel">
+    /* babel: ES2016 ==> ES5 번역하는 자바스크립트 컴파일러 */
+    const name = "abc"; // 읽기전용
+    let age = 10; // 읽기 쓰기
 
-
-
-
-
-
-
-
+    const getMessage = ()=>{
+        return "Hello, ES2016";
+    }
+    document.getElementById("output_es6").innerText = getMessage();
+</script>

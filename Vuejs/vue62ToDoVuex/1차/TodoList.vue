@@ -16,7 +16,7 @@ li {
     border-radius: 5px;
 }
 li.checked {
-    background: #BBB;
+    background: #bbb;
     color: #fff;
     text-decoration: line-through;
 }
@@ -48,14 +48,14 @@ li.checked {
                 v-for="(todoItem, index) in todoItems"
                 v-bind:key="todoItem.id"
                 v-bind:class="checked(todoItem.done)"
-                v-on:click="doneToggle(todoItem.id, index)"
+                v-on:click="doneToggle(todoItem.id)"
             >
                 <i class="checkBtn fas fa-check" aria-hidden="true"></i>
                 {{ todoItem.todo }}
                 <span
                     class="removeBtn"
                     type="button"
-                    v-on:click="removeTodo(todoItem.id, index)"
+                    v-on:click="removeTodo(todoItem.id)"
                 >
                     <i class="far fa-trash-alt" aria-hidden="true"></i>
                 </span>

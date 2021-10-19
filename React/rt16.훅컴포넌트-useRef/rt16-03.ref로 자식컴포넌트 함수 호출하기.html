@@ -70,6 +70,45 @@
 
 </html>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.js">
+    /* 자바스크립트로 컴파일러. ES6-->ES5, JSX-->ES5 */
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/16.12.0/umd/react.development.js">
+    /* import React, { Component, PureComponent } from 'react' */
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.11.0/umd/react-dom.development.js">
+    /* import ReactDOM from 'react-dom' */
+</script>
+<script type="text/babel">
+    //import React, { useState, useEffect, useRef, useCallback, useMemo, Fragment } from 'react';
+    const {useState, useEffect, useRef, useCallback, useMemo, forwardRef, useImperativeHandle } = React;
 
+    function FancyInput(props, ref) {
 
-
+        const inputRef = useRef();
+        useImperativeHandle(ref, () => ({
+            childInputFocus: (param) => {
+                inputRef.current.focus();
+            }
+        }));
+        return <input ref={inputRef} type="text" defaultValue={visible} />;
+    }
+    FancyInput = forwardRef(FancyInput);
+    function TextInputWithFocusButton() {
+        const inputEl = useRef(null);
+
+        const onButtonClick = () => {
+            // `current` points to the mounted text input element
+            inputEl.current.childInputFocus('123');
+        };
+        // JSX로 화면 만들기
+        return (
+            <div>
+                <FancyInput ref={inputEl} />
+                <button onClick={onButtonClick}>Focus the input</button>
+            </div>
+        );
+    }
+
+    ReactDOM.render(<TextInputWithFocusButton></TextInputWithFocusButton>, document.getElementById('app'));
+</script>

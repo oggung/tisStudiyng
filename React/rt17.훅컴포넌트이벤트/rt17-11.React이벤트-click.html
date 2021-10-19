@@ -39,15 +39,15 @@
                 </div>
             );
 
-        2. 스타일을 작성한다.
-            style1 = {
+        2. 아래의 스타일을 자바스크립 표기법으로 바꾼다.
+            style1 {
                 width: 100px;
                 height: 100px;
                 vertical-align: center;
                 line-height: 100px;
                 background: gray;
             }
-            style2 = {
+            style2 {
                 width: 100px;
                 height: 100px;
                 vertical-align: center;
@@ -65,3 +65,61 @@
 
 </html>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.js">
+    /* 자바스크립트로 컴파일러. ES6-->ES5, JSX-->ES5 */
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/16.12.0/umd/react.development.js">
+    /* import React, { Component, PureComponent } from 'react' */
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prop-types/15.7.2/prop-types.js">
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.11.0/umd/react-dom.development.js">
+    /* import ReactDOM from 'react-dom' */
+</script>
+<script type="text/babel">
+
+    const { useState, useEffect, useRef, useCallback, useMemo, Fragment } = React;
+
+    function Greeting(props) {
+
+        const style ={
+            style1: {
+                width: "100px",
+                height: "100px",
+                verticalAlign: "center",
+                lineHeight: "100px",
+                background: "gray",
+            },
+            style2: {
+                width: "100px",
+                height: "100px",
+                verticalAlign: "center",
+                lineHeight: "100px",
+                background: "yellow",
+            },
+        }
+        // 이벤트 핸들러 작성.
+        const handlerClick1 = (event)=>{
+            // 이벤트 핸들러는 화살표 함수로 만들면 this bind()를 생략해도 된다
+            console.log(event.target);
+        };
+        const handlerClick2 = (event)=>{
+            // 이벤트 핸들러는 화살표 함수로 만들면 this bind()를 생략해도 된다
+            console.log(event.target);
+        };
+
+        // JSX로 화면 만들기
+        return (
+            <div>
+                <div style={style.style1} onClick={handlerClick1}>
+                    div1
+                </div>
+                <div style={style.style2} onClick={handlerClick2}>
+                    div2
+                </div>
+            </div>
+        )
+    }
+
+    ReactDOM.render( <Greeting></Greeting> , document.getElementById("app") );
+</script>

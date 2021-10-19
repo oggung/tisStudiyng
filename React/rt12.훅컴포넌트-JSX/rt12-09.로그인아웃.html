@@ -92,6 +92,89 @@
 
 </html>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.js">
+    /* 자바스크립트로 컴파일러. ES6-->ES5, JSX-->ES5 */
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/16.12.0/umd/react.development.js">
+    /* import React, { Component, PureComponent } from 'react' */
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.11.0/umd/react-dom.development.js">
+    /* import ReactDOM from 'react-dom' */
+</script>
+<script type="text/babel">
 
+    //import React, { useState, useEffect, useRef, useCallback, useMemo, Fragment } from 'react';
+    const {useState, useEffect, useRef, useCallback, useMemo} = React;
 
-
+    function UserGreeting(props) {
+        return (
+            <div className="profile">
+                <div className="user_area">
+                    <div className="user_info">
+                        <a href="#" className="user_thumbnail">
+                            <span className="mask"></span>
+                            <img id="profile_image" src="../images/myInfo.gif" />
+                        </a>
+                        <div className="private">
+                            <span className="user_name">
+                                <a href="#"><strong id="user_name">??? 회원님</strong></a>
+                            </span>
+                            <a href="#" target="_parent" className="link_myinfo">내정보</a>
+                            <a href="" target="_parent" className="btn_logout">
+                                <span className="btn_inr" >로그아웃</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    };
+
+    function GuestGreeting(props) {
+        return (
+            <div className="login">
+                <form>
+                    <input type="hidden" name="seq" value="1" />
+                    <label> 아이디를 입력하세요 : </label>
+                    <input type="text" name="userid"/>  <br/>
+                    <label> 패스워드를 입력하세요 :</label>
+                    <input type="password"  name="password"/>  <br/>
+                    <input type="button" id="submit" value="전송" />
+                </form>
+            </div>
+        );
+    };
+
+    function Greeting(props) {
+        const {isLoggedIn} = props;
+
+        if (isLoggedIn) {
+            return <UserGreeting />;
+        }
+        else {
+            return <GuestGreeting />;
+        }
+    }
+
+    function GreetinContainer(props) {
+        // 컴포넌트의 상태값 설정
+        const [isLoggedIn, setIsLoggedIn] = useState(true); // 상태값이 기본타입인 경우
+
+        // 이벤트 핸들러 작성.
+        const handler = (event)=>{
+            setIsLoggedIn(!isLoggedIn);
+        };
+
+        // JSX로 화면 만들기
+        return (
+            <div>
+                <button onClick={handler}>버튼</button>
+                <br />
+                <br />
+                <Greeting GreetinContainer isLoggedIn={isLoggedIn} />
+            </div>
+        )
+    };
+
+    ReactDOM.render( <GreetinContainer GreetinContainer />, document.getElementById("app") );
+</script>

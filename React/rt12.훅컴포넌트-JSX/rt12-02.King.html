@@ -27,7 +27,7 @@
             부모 컴포넌트 : KingContainer
             자식 컴포넌트 : King
 
-        KingContainer 의 render() 에서 사용할 JSX
+        KingContainer 에서 사용할 JSX
         <div>
             <King name="세종대왕">
                 <span>0</span>
@@ -51,11 +51,9 @@
         <h3>광개토</h3>
         <h3>왕건</h3>
 	</div>
-
 </body>
 
 </html>
-
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.js">
     /* 자바스크립트로 컴파일러. ES6-->ES5, JSX-->ES5 */
@@ -68,44 +66,43 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.11.0/umd/react-dom.development.js">
     /* import ReactDOM from 'react-dom' */
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react-redux/7.2.2/react-redux.js">
-    /*  import ReactRedux, {Provider, useDispatch, useSelector} from 'react-redux' */
-</script>
-
 <script type="text/babel">
 
     const { useState, useEffect, useRef, useCallback, useMemo, Fragment } = React;
 
     function KingContainer(props) {
         // 컴포넌트의 상태값 설정
-        const [king, setKing] = useState(['세종대왕','이순신','광개토','왕건']); // 상태값이 기본타입인 경우
+        const [변수명, set변수명] = useState([
+            { name: "세종대왕", idx: 0, },
+            { name: "이순신", idx: 1, },
+            { name: "광개토", idx: 2, },
+            { name: "왕건", idx: 3, },
+        ]); // 상태값이 참조타입인 경우
 
-        const kings = king.map((king, index)=>{
-            return (<King name={king}><span>{index}</span></King>)
+        // JSX로 화면 만들기
+        const kings  = 변수명.map( (item)=> {
+            return (
+            <King name={item.name}>
+                <span>{item.idx}</span>
+            </King>
+            )
         })
-
         return (
-            <Fragment>
-                {kings}
-            </Fragment>
+        <div>
+            {kings}
+        </div>
         )
-
-
-    };
+    }
 
     function King(props) {
-        // 컴포넌트의 상태값 설정
-        const [변수명, set변수명] = useState('기본값'); // 상태값이 기본타입인 경우
-        const [state, setState] = useState({ id: 0, name: '', age: 0, }); // 상태값이 참조타입 경우
+        // JSX로 화면 만들기
         return (
             <div>
                 {props.name}
                 {props.children}
             </div>
         )
+    }
 
-
-    };
-
-    ReactDOM.render( <KingContainer ></KingContainer>, document.getElementById("app") );
+    ReactDOM.render( <KingContainer />, document.getElementById("app"));
 </script>
