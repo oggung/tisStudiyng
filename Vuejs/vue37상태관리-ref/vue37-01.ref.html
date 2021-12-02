@@ -70,7 +70,9 @@
         methods: {
             /* 이벤트 핸들러 등록 + 일반 함수 */
             handlerMyinput1(){
-                // <input type="text" ref="myinput1" id="myinput1"> 에서 value 값을 가져오려면
+                // <input type="text" ref="myinput1" id="myinput1"> 에서 value 값을 가져오려면 디스 쩜 딸라 데이터
+                console.log("message==>>" + this.$data.message);
+
             }
         },
         components: {
@@ -92,7 +94,7 @@
             this.$refs.myinput1.focus();
         },
         updated: function() {
-            console.log("updated");
+            console.log(this.$data.message);
         },
     });
 
